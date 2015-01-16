@@ -1,0 +1,200 @@
+\documentclass[a4paper, 11pt, titlepage]{article}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+\usepackage{pifont}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\title{Correction de l'examen de Réseaux}
+\date{14 janvier 2013}
+\author{Julien VANBERGEN}
+\begin{document}
+\maketitle
+
+\section{Correction exercice 1}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item
+
+%POINT 2
+\item 
+
+%POINT 3
+\item 
+Mononode ou multinode?
+
+\end{enumerate}
+
+\section{Correction exercice 2}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item
+\begin{enumerate}[label=(\roman*)]
+\item A : Name est hostname et Value est l'IP de l'hostname. A fournit le mapping standard hostname-to-IP.
+\item NS : Name est un domaine et Value est le histname d'n serveur DNS autoritaire qui connait l'adresse IP du domaine. On s'en sert pour ???.
+\item CNAME : Value est un hostname canonique pour l'hostname alias Name.
+\item MX : Value est le nom canonique d'un serveur mail qui a un hostname alias Name.
+\end{enumerate}
+
+%POINT 2
+\item
+
+
+\end{enumerate}
+
+
+\section{Correction exercice 3}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item
+Le sender est autorisé à transmettre de multiples packets (si disponible) sans attendre d'ACKs, mais est contraint de ne pas avoir plus de N packets sans ACK dans le pipeline.
+
+%POINT 2
+\item 
+Window size(N) $\leq seq\# $size(K) -1 
+
+%POINT 3
+\item  
+\begin{itemize}
+\item Le receveur de GBN a une fenêtre de 1.
+\item Pas de buffer au receveur avec GBN mais bien dans SR pour mémoriser les packets qui ne sont pas dans l'ordre.
+\item 1 timer dans GBN pour le plus ancien paquet envoyé mais pas reçu. Chaque packet a son propre timer dans SR.
+\item Dans SR, on renvoit que les packets sans ACK alors que dans GBN, on revnoit tout les paquets à partir de celui sans ACK.
+\end{itemize}
+
+\end{enumerate}
+
+\section{Correction exercice 4}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item
+Comme son nom l'indique, le three-way handshake se déroule en trois étapes:
+
+\begin{itemize}
+
+\item SYN : Le client qui désire établir une connexion avec un serveur va envoyer un premier paquet SYN (synchronized) au serveur. Le numéro de séquence de ce paquet est un nombre aléatoire A.
+\item SYN-ACK : Le serveur va répondre au client à l'aide d'un paquet SYN-ACK (synchronize, acknowledge). Le numéro du ACK est égal au numéro de séquence du paquet précédent (SYN) incrémenté de un (A + 1) tandis que le numéro de séquence du paquet SYN-ACK est un nombre aléatoire B.
+\item ACK : Pour terminer, le client va envoyer un paquet ACK au serveur qui va servir d'accusé de réception. Le numéro de séquence de ce paquet est défini selon la valeur de l'acquittement reçu précédemment p.e. A + 1 et le numéro du ACK est égal au numéro de séquence du paquet précédent (SYN-ACK) incrémenté de un (B + 1).
+\end{itemize}
+
+Une fois le three-way handshake effectué, le client et le serveur ont reçu un acquittement de la connexion. Les étapes 1 et 2 définissent le numéro de séquence pour la communication du client au serveur et les étapes 2 et 3 définissent le numéro de séquence pour la communication dans l'autre sens. Une communication full-duplex est maintenant établie entre le client et le serveur
+
+
+%POINT 2
+\item
+Le 2 way handshake n'est pas suffisant car on saute l'etape 2 du 3 way handshake. Si par exemple, un Client A veut parler avec un serveur B, il faut que B sache que A peut entendre ce qu'il dit. Car dans le 2 way handshake, A envoi à B et B répond à A. Mais B ne sait pas si son message est reçu par A.
+
+\end{enumerate}
+
+\section{Correction exercice 5}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item 
+Il y a un évènement de perte : timeout et three duplicate ACKs.
+
+%POINT 2
+\item
+
+%POINT 3
+\item 
+Congestion légère : \\
+
+Congestion sévère : \\
+
+%POINT 4
+\item 
+
+\end{enumerate}
+
+
+\section{Correction exercice 6}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item
+\begin{itemize}
+\item via Memory : Les plus simples, les premiers routeurs étaient de simples ordinateurs. Le switch entre les ports d'entrée et sortie étaient fait via le CPU. Lorsqu'un paquet arrive au port d'entrée, le processus de routing l'identifiera via une interruption.Il copiera ensuite les paquets arrivant du buffer d'entrée sur le processeur mémoire. Le processeur extrait ensuite l'adresse de destination, recherche la table appropriée et copie le paquet sur le buffer du port de sortie. Dans les routeurs modernes, la recherche de l'adresse de destination et le stockage du paquet dans la mémoire appropriée est exécuté par les cartes de ligne d'entrée des processeurs.\\
+Avantages : \\
+Inconvénients : \\
+\item via un bus : Le port d'entrée transfert les paquets directement sur le port de sortie via un bus partagé sans l'intervention d'un processus de routage. Comme le bus est partagé, seul un paquet est transféré à la fois via le bus. Si le bus est occupé, le paquet arrivant doit attendre dans une file. La bande passante du routeur est limitée par le bus comme chaque paquet doit traverser le bus seul. Exemple :  Bus switching CISCO-1900, 3-COM’s care builder5.\\
+Avantages : \\
+Inconvénients : \\
+\item via un réseau interconnecté : Pour surmonter le problème de la bande passante d'un bus partagé, les commutateurs réseaux en croix sont utilisés. Dans les commutateurs réseaux en croix,port  entrées et sorties sont connectés par des bus hozitontaux et verticaux. Si nous avons N ports d'entrés et N ports de sorties, on a besoin de 2N bus pour les connecter. Pour transférer un paquet du port d'entrée au port de sortie correspondant, le paquet traverse le bus horizontal jusqu'à une intersection avec un bus vertival qui le conduit à son port de destination. Si le vertical est libre, le paquet est transféré. Mais si le bus vertical est occupé à cause d'une autre entrée, la ligne doit transférer des paquets au même port de destination. Les paquets sont bloqués et font la file sur le même port d'entrée.\\
+Avantages : \\
+Inconvénients : \\
+\end{itemize}
+
+%POINT 2
+\item 
+
+%POINT 3
+\item 
+
+\end{enumerate}
+
+\section{Correction exercice 7}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item
+Quand on cherche à envoyer une table d'entrée pour une adresse de destination donnéee, on utilise le préfixe de la plus longue adresse qui correspond à l'adresse de destination.
+
+%POINT 2
+\item 
+ça sert à détecter le cas où une table donne un sous-réseau.
+
+
+\end{enumerate}
+
+\section{Correction exercice 8}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item 
+
+%POINT 2
+\item
+\begin{itemize}
+\item BGP mémorise toutes les routes vers toutes les destination : récupération rapide lorsqu'une destination devient inaccessible par la route initialement choisie.
+\item BGP construit des routes sans boucle : \begin{itemize}
+\item Le chemin suici est décrit explicitement à l'aide des AS traversés.
+\item Les boucles sont facilement détectées.
+\end{itemize}
+\end{itemize}
+
+
+\end{enumerate}
+
+
+\section{Correction exercice 9}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item 
+
+%POINT 2
+\item
+
+%POINT 3
+\item 
+
+%POINT 4
+\item 
+
+\end{enumerate}
+
+\section{Correction exercice 10}
+\begin{enumerate}[label=(\alph*)]
+%POINT 1
+\item
+
+%POINT 2
+\item
+
+%POINT 3
+\item
+
+\end{enumerate}
+
+
+
+
+\end{document}
