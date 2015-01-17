@@ -17,9 +17,17 @@
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
+Dans WMD, chaque station reçoit deux canaux. Un canal de faible bande passante pour la signalisation de la station et un canal d'une bande passante plus large pour envoyer et recevoir des trames. Chaque canal est divisé en groupes de slots. Appelons m le nombre de slots du canal de signalisation. L'expression n+1 indique le nombre de slots du canal de données : n slots de données utiles et un slot supplémentaire pour que la station renseigne sur son état, principalement pour indiquer les slots libres sur chacun de ses deux canaux. Sur ces deux canaux, la séquence de slots se répète continuellement, avec un marquage particulier pour le slot 0, afin que les stations arrivant plus tard puissent le repérer. Toutes les stations sont synchronisées au moyen d'une seule horloge pilote.
+Le protocole gère 3 classes de trafic : 
+\begin{itemize}
+\item Un trafic à débit constant en mode connecté, tel celui d'une vidéo compressée.
+\item Un trafic à débit variable en mode connecté, tel celui d'un transfert de fichier.
+\item Un trafic constitué de datagrammes en mode non connecté, tels des paquets UDP.
+ \end{itemize}
 
 %POINT 2
 \item 
+Pour les deux protocoles orientés connexion, l'idée de base est qu'une station A souhaitant communiquer avec une station B doit au préalable insérer une trame de demande de connexion dans un slot libre sur le canal de signalisation de B. Si B accepte, la communication peut avoir lieu par l'intermédiaire du canal de données de A.
 
 
 \end{enumerate}
@@ -39,9 +47,11 @@
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
+Ports can provide multiple endpoints on a single node. For example, the name on a postal address is a kind of multiplexing, and distinguishes between different recipients of the same location. Computer applications will each listen for information on their own ports, which enables the use of more than one network service at the same time. It is part of the transport layer in the TCP/IP model, but of the session layer in the OSI model.
 
 %POINT 2
 \item 
+In TCP, the receiver host uses all of source IP, source port, destination IP and destination port to direct datagram to appropriate socket. While in UDP, the receiver only checks destination port number to direct the datagram.
 
 
 \end{enumerate}
@@ -50,9 +60,21 @@
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
+\begin{itemize}
+\item 
+\item 
+\item 
+\item
+\end{itemize}
 
 %POINT 2
 \item 
+\begin{itemize}
+\item 
+\item 
+\item 
+\item
+\end{itemize}
 
 %POINT 3
 \item 
@@ -61,7 +83,14 @@
 
 \section{Correction exercice 5}
 
-blabla
+Lorsqu'un paquet est envoyé vers l'extérieur, il passe par un dispositif NAT qui converytir l'adresse IP interne en adresse IP officielle de l'entreprise. Le dispositif NAT et un pare-feu sont souvent combinés dans le même équipement, offrant ainsi une certaine sécurité en contrôlant précisément ce qui entre sur le réseau et en sort.\\
+
+Structure d'une table NAT : \\
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  IP interne & IP externe & Durée (s) & Réutilisable?  \\
+  \hline
+\end{tabular}
 
 \section{Correction exercice 6}
 \begin{enumerate}[label=(\alph*)]
