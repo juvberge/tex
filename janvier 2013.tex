@@ -44,18 +44,19 @@
   \item
   \begin{enumerate}[label=(\roman*)]
     \item A : Name est hostname et Value est l'IP de l'hostname. A fournit le mapping standard hostname-to-IP.
-    \item NS : Name est un domaine et Value est le hostname d'un serveur DNS autoritaire qui connait l'adresse IP du domaine. On s'en sert pour ???.
+    \item NS : Name est un domaine et Value est le hostname d'un serveur DNS autoritaire qui connait l'adresse IP du domaine. Il permet à un client de connaître le serveur à contacter pour ce domaine.
     \item CNAME : Name est un alias pour le hostname présent dans Value.
     \item MX : Value est le nom canonique d'un serveur mail qui a un hostname alias Name.
   \end{enumerate}
 
   \item
-  \begin{enumerate}
+  \begin{enumerate}[label=(\roman*)]
     \item Le client émet une requête \texttt{www.company.com in A} à son serveur DNS local. 
     \item Le serveur local, n'ayant pas l'adresse requise en cache, contacte un des root servers (défini dans sa configuration), avec la même requête.
     \item Le serveur root contacté lui renvoie alors le nom et l'adresse authoritaire (champs \texttt{NS} et \texttt{A} du serveur principal pour le TLD \texttt{.com})
-    \item Le serveur local réémet à nouveau la même requête vers le serveur du TLD \texttt{.com}. Ce serveur TLD renvoie lui aussi un enregistrement \texttt{NS} et \texttt{A} pour le serveur faisant authorité sur le domaine \texttt{www.company.com}.
-    \item L'étape précédente est répétée en chaîne, jusqu'à ce que le serveur ayant l'enregistrement \texttt{A} pour le domaine recherché soit atteint. Le contenu de cet enregistrement est renvoyé au serveur DNS local, qui le met en cache. Enfin, l'adresse IP est renvoyée au client.
+    \item Le serveur local réémet à nouveau la même requête vers le serveur du TLD \texttt{.com}. Ce serveur TLD renvoie lui aussi les champs \texttt{NS} et \texttt{A} pour le serveur faisant authorité sur le domaine \texttt{www.company.com} (\textit{par exemple ns110.ovh.net}).
+    \item Le serveur local contacte alors le serveur authoritaire, qui lui renvoie la zone pour le domaine \texttt{company.com}, qui contient un champ \texttt{CNAME} pour \texttt{www.company.com}. Si cet champ pointe vers le domaine contenu dans l'enregistrement \texttt{A} de la zone, la recherche s'arrête, le client a obtenu l'ip désirée.
+    \item Sinon, tant qu'un enregistrement \texttt{A} n'a pas été trouvé, le serveur recommence les mêmes étapes à partir du domaine obtenu dans le champ \texttt{CNAME}.
   \end{enumerate}
 
 \end{enumerate}
@@ -239,13 +240,13 @@ Le protocole de routage interdomaine BGP est plus apparenté à la famille des p
 \begin{enumerate}[label=(\alph*)]
   \item Qu’est-ce que le CSMA/CD ? En quoi améliore-t-il le CSMA ?
   \item Quelle contrainte le CSMA/CD introduit-il par rapport au CSMA ? Pourquoi ?
-  \item IEEE 802.3 (plus communément appelé Ethernet) est un protocole de type CSMA/CD dont laméthode d'accès a été améliorée. Quelle est cette amélioration ?
+  \item IEEE 802.3 (plus communément appelé Ethernet) est un protocole de type CSMA/CD dont la méthode d'accès a été améliorée. Quelle est cette amélioration ?
   \item Expliquez pourquoi, si l’on veut garder le même format de trame, la méthode CSMA/CD exige de raccourcir le réseau pour atteindre des débits plus élevés. Il est toutefois possible de ne pas respecter cette longueur maximale du réseau, qui devient très contraignante à haut débit. Dans quelles conditions ?
 \end{enumerate}
 
 \subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
-\item La technologie \textbf{C}arrier \textbf{Sense} \textbf{M}ultiple \textbf{A}ccess permet à plusieurs machines d'utiliser un même bus de communication. En plus de l'équipement de transmission, une sonde mesure l'état du bus. Dans la version simple de CDMA, une machine ne peut transmettre sur le bus si elle détecte de l'activité dessus. Cependant, en raison du temps de propagation, surtout sur des longues distances, deux machines pourraient considérer le bus comme libre et commencer à écrire en même temps, pour se retrouver en collision quelques instants après. Le CSMA/CD rajoute la \textbf{C}ollision \textbf{D}etection: si lorsqu'un bit a été écrit sur le bus, l'état mesuré est différent, la machine considère qu'il y a collision et arrête immédiatement d'écrire sur le bus.
+\item La technologie \textbf{C}arrier \textbf{Sense} \textbf{M}ultiple \textbf{A}ccess permet à plusieurs machines d'utiliser un même média de communication. En plus de l'équipement de transmission, une sonde mesure l'état du média. Dans la version simple de CDMA, une machine ne peut transmettre si elle détecte de l'activité sur le média. Cependant, en raison du temps de propagation, surtout sur des longues distances, deux machines pourraient considérer le bus comme libre et commencer à écrire en même temps, pour se retrouver en collision quelques instants après. Le CSMA/CD rajoute la \textbf{C}ollision \textbf{D}etection: si lorsqu'un bit a été écrit, l'état mesuré est différent, la machine considère qu'il y a collision et arrête immédiatement d'écrire sur le bus. Elle attend ensuite pour un temps déterminé aléatoirement afin que deux machines en collision ne recommencent pas à émettre en même temps. 
 \item
 
 %POINT 3
