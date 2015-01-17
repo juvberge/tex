@@ -7,45 +7,70 @@
 \usepackage{array}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{fullpage}
+
 \title{Correction de l'examen de Réseaux}
 \date{14 janvier 2013}
 \author{Julien VANBERGEN}
 \begin{document}
 \maketitle
 
-\section{Correction exercice 1}
+\section{Exercice 1}
+\subsection{\'Enoncé}
 \begin{enumerate}[label=(\alph*)]
-%POINT 1
-\item
-
-%POINT 2
-\item 
-
-%POINT 3
-\item 
-Mononode ou multinode?
-
+  \item Expliquez la dispersion de délai dans une fibre optique.
+  \item Quelle en est la conséquence ?
+  \item Dans quel type de fibre la rencontre-t-on ?
 \end{enumerate}
 
-\section{Correction exercice 2}
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
-%POINT 1
-\item
-\begin{enumerate}[label=(\roman*)]
-\item A : Name est hostname et Value est l'IP de l'hostname. A fournit le mapping standard hostname-to-IP.
-\item NS : Name est un domaine et Value est le histname d'n serveur DNS autoritaire qui connait l'adresse IP du domaine. On s'en sert pour ???.
-\item CNAME : Value est un hostname canonique pour l'hostname alias Name.
-\item MX : Value est le nom canonique d'un serveur mail qui a un hostname alias Name.
-\end{enumerate}
-
-%POINT 2
-\item
-
-
+  \item La dispersion du délai se produit lorsque les rayons lumineux sont réfractés ou réfléchis par la couche périphérique de l'âme de la fibre, et que ces rayons ont des trajectoires différentes. Ces trajectoires ayant des longueur différentes, le temps que mettra la lumière à les parcourir diffèrera, et une impulsion lumineuse très courte pourrait être reçue en plusieurs fragments de l'autre côté.
+  \item La détection des bits formés par ces impulsions lumineuses devient plus difficile, voire impossible, à moins d'espacer les impulsions lumineuses par un délai d'attente. Cependant, ce délai pénalise énormément le débit de la fibre puisque c'est du temps qui pourrait être utilisé pour transférer des données.
+  \item On rencontre ce phénomène dans les fibres multimodes.
 \end{enumerate}
 
 
-\section{Correction exercice 3}
+
+\section{Exercice 2}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+\item Définissez les différents types de «Resource Records (RR)» utilisés par le protocole DNS et expliquez leur rôle.
+\item Donnez le scénario d’échange de messages DNS, par la méthode itérative, permettant à un client de trouver l’adresse IP d’un serveur web dont l’URL est www.company.com, en indiquant les RR présents dans ces messages. On supposera que les caches DNS sont vides
+\end{enumerate}
+
+\subsection{Correction}
+\begin{enumerate}[label=(\alph*)]
+  \item
+  \begin{enumerate}[label=(\roman*)]
+    \item A : Name est hostname et Value est l'IP de l'hostname. A fournit le mapping standard hostname-to-IP.
+    \item NS : Name est un domaine et Value est le hostname d'un serveur DNS autoritaire qui connait l'adresse IP du domaine. On s'en sert pour ???.
+    \item CNAME : Name est un alias pour le hostname présent dans Value.
+    \item MX : Value est le nom canonique d'un serveur mail qui a un hostname alias Name.
+  \end{enumerate}
+
+  \item
+  \begin{enumerate}
+    \item Le client émet une requête \texttt{www.company.com in A} à son serveur DNS local. 
+    \item Le serveur local, n'ayant pas l'adresse requise en cache, contacte un des root servers (défini dans sa configuration), avec la même requête.
+    \item Le serveur root contacté lui renvoie alors le nom et l'adresse authoritaire (champs \texttt{NS} et \texttt{A} du serveur principal pour le TLD \texttt{.com})
+    \item Le serveur local réémet à nouveau la même requête vers le serveur du TLD \texttt{.com}. Ce serveur TLD renvoie lui aussi un enregistrement \texttt{NS} et \texttt{A} pour le serveur faisant authorité sur le domaine \texttt{www.company.com}.
+    \item L'étape précédente est répétée en chaîne, jusqu'à ce que le serveur ayant l'enregistrement \texttt{A} pour le domaine recherché soit atteint. Le contenu de cet enregistrement est renvoyé au serveur DNS local, qui le met en cache. Enfin, l'adresse IP est renvoyée au client.
+  \end{enumerate}
+
+\end{enumerate}
+
+
+
+\section{Exercice 3}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+\item Expliquez le principe d’un protocole à fenêtre glissante GBN (Goback N).
+\item Quelle est la taille maximale de la fenêtre de l’émetteur, si les trames sont numérotées modulo k ? Pourquoi ?
+\item Citez et expliquez 4 différences apportées par le protocole SR (Selective Repeat).
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
@@ -66,7 +91,16 @@ Window size(N) $\leq seq\# $size(K) -1
 
 \end{enumerate}
 
-\section{Correction exercice 4}
+
+
+\section{Exercice 4}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+\item Expliquez l’établissement de connexion «3-way handshake» utilisé dans le protocole de transport TCP, en indiquant les paramètres importants présents dans les échanges et leurs rôles.
+\item Expliquez avec l’aide d’un exemple pourquoi un «2-way handshake» ne serait pas suffisant.
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
@@ -81,14 +115,24 @@ Comme son nom l'indique, le three-way handshake se déroule en trois étapes:
 
 Une fois le three-way handshake effectué, le client et le serveur ont reçu un acquittement de la connexion. Les étapes 1 et 2 définissent le numéro de séquence pour la communication du client au serveur et les étapes 2 et 3 définissent le numéro de séquence pour la communication dans l'autre sens. Une communication full-duplex est maintenant établie entre le client et le serveur
 
-
 %POINT 2
 \item
 Le 2 way handshake n'est pas suffisant car on saute l'etape 2 du 3 way handshake. Si par exemple, un Client A veut parler avec un serveur B, il faut que B sache que A peut entendre ce qu'il dit. Car dans le 2 way handshake, A envoi à B et B répond à A. Mais B ne sait pas si son message est reçu par A.
 
 \end{enumerate}
 
-\section{Correction exercice 5}
+
+
+\section{Exercice 5}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+  \item Comment l’émetteur TCP détecte-t-il une congestion ?
+  \item Décrivez le mécanisme de contrôle de congestion de TCP.
+  \item Quelle distinction TCP fait-il entre congestion légère et congestion sévère ? Comment réagit-ildans chaque cas ? 
+  \item Si on néglige les effets du contrôle de flux, ce contrôle de congestion détermine largement le débitmoyen d’une connexion TCP. Quand plusieurs connexions TCP sont en compétition, se partagent-elles la bande passante disponible de façon équitable. Expliquez.
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item 
@@ -108,8 +152,15 @@ Congestion sévère : \\
 
 \end{enumerate}
 
+\section{Exercice 6}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+  \item Enoncez les différents types de matrice de commutation («switch fabric») rencontrées dans les routeurs, ainsi que leurs avantages/inconvénients respectifs.
+  \item Expliquez la raison d’être et l’inconvénient potentield’une bufferisation au niveau des ports d’entrées.
+  \item Expliquez la raison d’être d’une bufferisation au niveau des ports de sortie.
+\end{enumerate}
 
-\section{Correction exercice 6}
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
@@ -133,7 +184,15 @@ Inconvénients : \\
 
 \end{enumerate}
 
-\section{Correction exercice 7}
+
+\section{Exercice 7}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+  \item Expliquez le principe du «Longest Prefix Match» lors de l’acheminement de paquets IP.
+  \item Quel est son intérêt ?
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
@@ -146,7 +205,16 @@ Quand on cherche à envoyer une table d'entrée pour une adresse de destination 
 
 \end{enumerate}
 
-\section{Correction exercice 8}
+
+\section{Exercice 8}
+\subsection{\'Enoncé}
+Le protocole de routage interdomaine BGP est plus apparenté à la famille des protocoles de routage intradomaine à vecteur de distances (DV) qu’à celle des protocoles à état de lien (LS).
+\begin{enumerate}[label=(\alph*)]
+  \item Expliquez deux ressemblances importantes entre BGP et un protocole DV.
+  \item Expliquez deux différences importantes entre BGP et un protocole DV, et leur raison d’être.
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item 
@@ -165,7 +233,18 @@ Quand on cherche à envoyer une table d'entrée pour une adresse de destination 
 \end{enumerate}
 
 
-\section{Correction exercice 9}
+
+\section{Exercice 9}
+\subsection{\'Enoncé}
+Le protocole de routage interdomaine BGP est plus apparenté à la famille des protocoles de routage intradomaine à vecteur de distances (DV) qu’à celle des protocoles à état de lien (LS).
+\begin{enumerate}[label=(\alph*)]
+  \item Qu’est-ce que le CSMA/CD ? En quoi améliore-t-il le CSMA ?
+  \item Quelle contrainte le CSMA/CD introduit-il par rapport au CSMA ? Pourquoi ?
+  \item IEEE 802.3 (plus communément appelé Ethernet) est un protocole de type CSMA/CD dont laméthode d'accès a été améliorée. Quelle est cette amélioration ?
+  \item Expliquez pourquoi, si l’on veut garder le même format de trame, la méthode CSMA/CD exige de raccourcir le réseau pour atteindre des débits plus élevés. Il est toutefois possible de ne pas respecter cette longueur maximale du réseau, qui devient très contraignante à haut débit. Dans quelles conditions ?
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item 
@@ -181,7 +260,17 @@ Quand on cherche à envoyer une table d'entrée pour une adresse de destination 
 
 \end{enumerate}
 
-\section{Correction exercice 10}
+
+\section{Exercice 10}
+\subsection{\'Enoncé}
+Le protocole de routage interdomaine BGP est plus apparenté à la famille des protocoles de routage intradomaine à vecteur de distances (DV) qu’à celle des protocoles à état de lien (LS).
+\begin{enumerate}[label=(\alph*)]
+  \item Expliquez le rôle et le principe général des codes détecteurs d’erreur.
+  \item Pourquoi ne peuvent-ils être efficaces à 100\% ?
+  \item Donnez un exemple de code détecteur d’erreur plus élaboré que le bit de parité, et expliquez sonprincipe.
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
