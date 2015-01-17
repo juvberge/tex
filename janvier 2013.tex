@@ -7,45 +7,70 @@
 \usepackage{array}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{fullpage}
+
 \title{Correction de l'examen de Réseaux}
 \date{14 janvier 2013}
 \author{Julien VANBERGEN}
 \begin{document}
 \maketitle
 
-\section{Correction exercice 1}
+\section{Exercice 1}
+\subsection{\'Enoncé}
 \begin{enumerate}[label=(\alph*)]
-%POINT 1
-\item
-
-%POINT 2
-\item 
-
-%POINT 3
-\item 
-Mononode ou multinode?
-
+  \item Expliquez la dispersion de délai dans une fibre optique.
+  \item Quelle en est la conséquence ?
+  \item Dans quel type de fibre la rencontre-t-on ?
 \end{enumerate}
 
-\section{Correction exercice 2}
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
-%POINT 1
-\item
-\begin{enumerate}[label=(\roman*)]
-\item A : Name est hostname et Value est l'IP de l'hostname. A fournit le mapping standard hostname-to-IP.
-\item NS : Name est un domaine et Value est le histname d'n serveur DNS autoritaire qui connait l'adresse IP du domaine. On s'en sert pour ???.
-\item CNAME : Value est un hostname canonique pour l'hostname alias Name.
-\item MX : Value est le nom canonique d'un serveur mail qui a un hostname alias Name.
-\end{enumerate}
-
-%POINT 2
-\item
-
-
+  \item La dispersion du délai se produit lorsque les rayons lumineux sont réfractés ou réfléchis par la couche périphérique de l'âme de la fibre, et que ces rayons ont des trajectoires différentes. Ces trajectoires ayant des longueur différentes, le temps que mettra la lumière à les parcourir diffèrera, et une impulsion lumineuse très courte pourrait être reçue en plusieurs fragments de l'autre côté.
+  \item La détection des bits formés par ces impulsions lumineuses devient plus difficile, voire impossible, à moins d'espacer les impulsions lumineuses par un délai d'attente. Cependant, ce délai pénalise énormément le débit de la fibre puisque c'est du temps qui pourrait être utilisé pour transférer des données.
+  \item On rencontre ce phénomène dans les fibres multimodes.
 \end{enumerate}
 
 
-\section{Correction exercice 3}
+
+\section{Exercice 2}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+\item Définissez les différents types de «Resource Records (RR)» utilisés par le protocole DNS et expliquez leur rôle.
+\item Donnez le scénario d’échange de messages DNS, par la méthode itérative, permettant à un client de trouver l’adresse IP d’un serveur web dont l’URL est www.company.com, en indiquant les RR présents dans ces messages. On supposera que les caches DNS sont vides
+\end{enumerate}
+
+\subsection{Correction}
+\begin{enumerate}[label=(\alph*)]
+  \item
+  \begin{enumerate}[label=(\roman*)]
+    \item A : Name est hostname et Value est l'IP de l'hostname. A fournit le mapping standard hostname-to-IP.
+    \item NS : Name est un domaine et Value est le hostname d'un serveur DNS autoritaire qui connait l'adresse IP du domaine. On s'en sert pour ???.
+    \item CNAME : Name est un alias pour le hostname présent dans Value.
+    \item MX : Value est le nom canonique d'un serveur mail qui a un hostname alias Name.
+  \end{enumerate}
+
+  \item
+  \begin{enumerate}
+    \item Le client émet une requête \texttt{www.company.com in A} à son serveur DNS local. 
+    \item Le serveur local, n'ayant pas l'adresse requise en cache, contacte un des root servers (défini dans sa configuration), avec la même requête.
+    \item Le serveur root contacté lui renvoie alors le nom et l'adresse authoritaire (champs \texttt{NS} et \texttt{A} du serveur principal pour le TLD \texttt{.com})
+    \item Le serveur local réémet à nouveau la même requête vers le serveur du TLD \texttt{.com}. Ce serveur TLD renvoie lui aussi un enregistrement \texttt{NS} et \texttt{A} pour le serveur faisant authorité sur le domaine \texttt{www.company.com}.
+    \item L'étape précédente est répétée en chaîne, jusqu'à ce que le serveur ayant l'enregistrement \texttt{A} pour le domaine recherché soit atteint. Le contenu de cet enregistrement est renvoyé au serveur DNS local, qui le met en cache. Enfin, l'adresse IP est renvoyée au client.
+  \end{enumerate}
+
+\end{enumerate}
+
+
+
+\section{Exercice 3}
+\subsection{\'Enoncé}
+\begin{enumerate}[label=(\alph*)]
+\item Expliquez le principe d’un protocole à fenêtre glissante GBN (Goback N).
+\item Quelle est la taille maximale de la fenêtre de l’émetteur, si les trames sont numérotées modulo k ? Pourquoi ?
+\item Citez et expliquez 4 différences apportées par le protocole SR (Selective Repeat).
+\end{enumerate}
+
+\subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
 %POINT 1
 \item
