@@ -135,22 +135,10 @@ Le 2 way handshake n'est pas suffisant car on saute l'etape 2 du 3 way handshake
 
 \subsection{Correction}
 \begin{enumerate}[label=(\alph*)]
-%POINT 1
-\item 
-Il y a un évènement de perte : timeout et three duplicate ACKs.
-
-%POINT 2
-\item
-
-%POINT 3
-\item 
-Congestion légère : \\
-
-Congestion sévère : \\
-
-%POINT 4
-\item 
-
+\item TCP peut distinguer 2 types de congestions: soit il reçoit 3 ACKs consécutifs pour le même numéro de séquence (donc un des paquets intermédiaire a été perdus, mais les suivants sont passés: \textbf{faible congestion}), soit un ACK n'arrive pas dans le temps imparti (timeout, beaucoup de paquets perdus: \textbf{congestion sévère}).
+\item Au démarage de la transmission, TCP envoie les données avec une fenêtre de taille $1MSS$\footnote{Maximum Segment Size}, correspondant au nombre de paquets qui peuvent être "en vol" simultanément. La taille de la fenêtre est doublée à chaque itération (en incrémentant la taille à chaque ACK reçu), de sorte qu'elle a une \textbf{croissance exponentielle}. S'il détecte une faible congestion, il divise la taille de la fenêtre par deux et change de mode pour incrémenter la taille de la fenêtre à chaque itération ($+1$ pour chaque fenêtre totalement envoyée) pour adopter une \textbf{croissance linéaire}. Il approche ainsi dichotomiquement la taille moyenne de fenêtre optimale (càd le nombre de paquets "en vol", et donc la vitesse d'envoi). S'il détecte une congestion sévère, il réduit la taille de fenêtre à 1 et recommence en mode de croissance exponentiel. Il peut éventuellement repasser en mode de croissance linéaire lorsqu'il a atteint la moitié de la taille de fenêtre qui a provoqué un timeout (puisque doubler sa taille provoquera probablement de nouveau un timeout).
+\item Voir (a) et (b)
+\item Sachant que le timeout est calculé à partir du RTT, deux sessions TCP en compétition pour la même connexion approcheront toujours la vitesse optimale pour leurs RTT. TCP répartira la connexion de façon équitable en ce sens que chaque session utilisera une bande passante inversément proportionelle à son RTT, évitant la retransmission en bloc de paquets inutiles sur des connexions trop lentes.
 \end{enumerate}
 
 \section{Exercice 6}
